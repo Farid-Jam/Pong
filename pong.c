@@ -5,6 +5,7 @@ static int movementSpeed = 10;
 static const Uint32 white = 0xffffffff;
 static const Uint32 black = 0x00000000;
 
+// Function that handles moving of players
 void move_rect(SDL_Surface* surface, SDL_Rect* rect, int speed){
 	SDL_FillRect(surface, rect, black);
 	rect->y += speed;
@@ -37,13 +38,14 @@ int main()
 	int running = 1;
 	SDL_Event event;
 	while(running){
+		const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
 		SDL_PollEvent(&event);
+		if(event.type == SDL_QUIT)
+		{
+			running = 0;
+		}
 		if(event.type == SDL_KEYDOWN)
 		{
-			if(event.type == SDL_QUIT)
-			{
-				running = 0;
-			}
 			if(event.key.keysym.sym == SDLK_s)
 			{
 				move_rect(surface, &pl1, +movementSpeed);
