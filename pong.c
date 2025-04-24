@@ -1,6 +1,16 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
+static int movementSpeed = 10;
+static const Uint32 white = 0xffffffff;
+static const Uint32 black = 0x00000000;
+
+void move_rect(SDL_Surface* surface, SDL_Rect* rect, int speed){
+	SDL_FillRect(surface, rect, black);
+	rect->y += speed;
+	SDL_FillRect(surface, rect, white);
+}
+
 int main()
 {
 	// Initialize system
@@ -13,13 +23,11 @@ int main()
 
 	// Create player 1's rectange;
 	SDL_Rect pl1 = (SDL_Rect) {40, 40, 40, 200};
-	Uint32 color = 0xffffffff;
-	Uint32 black = 0x00000000;
-	SDL_FillRect(surface, &pl1, color);
+	SDL_FillRect(surface, &pl1, white);
 
 	// Create player 2's rectange;
 	SDL_Rect pl2 = (SDL_Rect) {560, 240, 40, 200};
-	SDL_FillRect(surface, &pl2, color);
+	SDL_FillRect(surface, &pl2, white);
 
 	// Update the window
 	SDL_UpdateWindowSurface(window);
@@ -30,33 +38,28 @@ int main()
 	SDL_Event event;
 	while(running){
 		SDL_PollEvent(&event);
-		if(event.type == SDL_QUIT)
+		if(event.type == SDL_KEYDOWN)
 		{
-			running = 0;
-		}
-		if(event.key.keysym.sym == SDLK_s)
-		{
-			SDL_FillRect(surface, &pl1, 0x00000000);
-			pl1.y += 10;
-			SDL_FillRect(surface, &pl1, color);
-		}
-		if (event.key.keysym.sym == SDLK_w)
-		{
-			SDL_FillRect(surface, &pl1, 0x00000000);
-			pl1.y -= 10;
-			SDL_FillRect(surface, &pl1, color);
-		}
-		if (event.key.keysym.sym == SDLK_DOWN)
-		{
-			SDL_FillRect(surface, &pl2, black);
-			pl2.y += 10;
-			SDL_FillRect(surface, &pl2, color);
-		}
-		if (event.key.keysym.sym == SDLK_UP)
-		{
-			SDL_FillRect(surface, &pl2, black);
-			pl2.y -= 10;
-			SDL_FillRect(surface, &pl2, color);
+			if(event.type == SDL_QUIT)
+			{
+				running = 0;
+			}
+			if(event.key.keysym.sym == SDLK_s)
+			{
+				move_rect(surface, &pl1, +movementSpeed);
+			}
+			if (event.key.keysym.sym == SDLK_w)
+			{
+				move_rect(surface, &pl1, -movementSpeed);
+			}
+			if (event.key.keysym.sym == SDLK_DOWN)
+			{
+				move_rect(surface, &pl2, +movementSpeed);
+			}
+			if (event.key.keysym.sym == SDLK_UP)
+			{
+				move_rect(surface, &pl2, -movementSpeed);
+			}
 		}
 		SDL_UpdateWindowSurface(window);
 		SDL_Delay(10);
