@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
-static int movementSpeed = 5;
+static int movement_speed = 5;
 static const Uint32 white = 0xffffffff;
 static const Uint32 black = 0x00000000;
+static const int refresh_rate = 60;
 
 // Function that handles moving of players
 void move_rect(SDL_Surface* surface, SDL_Rect* rect, int speed)
@@ -64,58 +65,62 @@ int main()
 		// Handle player inputs
 		if(keyboard_state_array[SDL_SCANCODE_S] && !(keyboard_state_array[SDL_SCANCODE_UP] || keyboard_state_array[SDL_SCANCODE_DOWN] || keyboard_state_array[SDL_SCANCODE_W]))
 		{
-			move_rect(surface, &pl1, +movementSpeed);
+			move_rect(surface, &pl1, +movement_speed);
 		}
 		if (keyboard_state_array[SDL_SCANCODE_W] && !(keyboard_state_array[SDL_SCANCODE_UP] || keyboard_state_array[SDL_SCANCODE_DOWN] || keyboard_state_array[SDL_SCANCODE_S]))
 		{
-			move_rect(surface, &pl1, -movementSpeed);
+			move_rect(surface, &pl1, -movement_speed);
 		}
 		if (keyboard_state_array[SDL_SCANCODE_DOWN] && !(keyboard_state_array[SDL_SCANCODE_UP] || keyboard_state_array[SDL_SCANCODE_S] || keyboard_state_array[SDL_SCANCODE_W]))
 		{
-			move_rect(surface, &pl2, +movementSpeed);
+			move_rect(surface, &pl2, +movement_speed);
 		}
 		if (keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_S] || keyboard_state_array[SDL_SCANCODE_DOWN] || keyboard_state_array[SDL_SCANCODE_W]))
 		{
-			move_rect(surface, &pl2, -movementSpeed);
+			move_rect(surface, &pl2, -movement_speed);
 		}
 		if (keyboard_state_array[SDL_SCANCODE_S] && keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_DOWN] || keyboard_state_array[SDL_SCANCODE_W]))
 		{
-			move_rect(surface, &pl2, -movementSpeed);
-			move_rect(surface, &pl1, +movementSpeed);
+			move_rect(surface, &pl2, -movement_speed);
+			move_rect(surface, &pl1, +movement_speed);
 		}
 		if (keyboard_state_array[SDL_SCANCODE_S] && keyboard_state_array[SDL_SCANCODE_DOWN] && !(keyboard_state_array[SDL_SCANCODE_UP] || keyboard_state_array[SDL_SCANCODE_W]))
 		{
-			move_rect(surface, &pl2, +movementSpeed);
-			move_rect(surface, &pl1, +movementSpeed);
+			move_rect(surface, &pl2, +movement_speed);
+			move_rect(surface, &pl1, +movement_speed);
 		}
 		if (keyboard_state_array[SDL_SCANCODE_W] && keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_DOWN] || keyboard_state_array[SDL_SCANCODE_S]))
 		{
-			move_rect(surface, &pl2, -movementSpeed);
-			move_rect(surface, &pl1, -movementSpeed);
+			move_rect(surface, &pl2, -movement_speed);
+			move_rect(surface, &pl1, -movement_speed);
 		}
 		if (keyboard_state_array[SDL_SCANCODE_W] && keyboard_state_array[SDL_SCANCODE_DOWN] && !(keyboard_state_array[SDL_SCANCODE_UP] || keyboard_state_array[SDL_SCANCODE_S]))
 		{
-			move_rect(surface, &pl2, +movementSpeed);
-			move_rect(surface, &pl1, -movementSpeed);
+			move_rect(surface, &pl2, +movement_speed);
+			move_rect(surface, &pl1, -movement_speed);
 		}
 		if (keyboard_state_array[SDL_SCANCODE_W] && keyboard_state_array[SDL_SCANCODE_DOWN] && keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_S]))
 		{
-			move_rect(surface, &pl1, -movementSpeed);
+			move_rect(surface, &pl1, -movement_speed);
 		}
 		if (keyboard_state_array[SDL_SCANCODE_S] && keyboard_state_array[SDL_SCANCODE_DOWN] && keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_W]))
 		{
-			move_rect(surface, &pl1, +movementSpeed);
+			move_rect(surface, &pl1, +movement_speed);
 		}
 		if (keyboard_state_array[SDL_SCANCODE_W] && keyboard_state_array[SDL_SCANCODE_S] && keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_DOWN]))
 		{
-			move_rect(surface, &pl2, -movementSpeed);
+			move_rect(surface, &pl2, -movement_speed);
 		}
 		if (keyboard_state_array[SDL_SCANCODE_W] && keyboard_state_array[SDL_SCANCODE_S] && keyboard_state_array[SDL_SCANCODE_DOWN] && !(keyboard_state_array[SDL_SCANCODE_UP]))
 		{
-			move_rect(surface, &pl2, +movementSpeed);
+			move_rect(surface, &pl2, +movement_speed);
 		}
+
+		// Update window
 		SDL_UpdateWindowSurface(window);
-		SDL_Delay(10);
+
+		// Set time between frames
+		SDL_Delay(refresh_rate/6);
 	}
 	SDL_Quit();
 }
