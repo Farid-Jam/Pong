@@ -39,6 +39,9 @@ int main()
 	640, 480, SDL_WINDOW_SHOWN);
 	SDL_Surface *surface = SDL_GetWindowSurface(window);
 
+	SDL_Rect middle = (SDL_Rect) {320, 0, 1, 480};
+	SDL_FillRect(surface, &middle, white);
+
 	// Create player 1's rectange;
 	SDL_Rect pl1 = (SDL_Rect) {40, 40, 40, 200};
 	SDL_FillRect(surface, &pl1, white);

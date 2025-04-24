@@ -1,0 +1,7 @@
+all: pong
+
+pong: pong.c
+	gcc -o pong pong.c -I/opt/homebrew/Cellar/sdl2/2.32.4/include -L/opt/homebrew/Cellar/sdl2/2.32.4/lib -lSDL2
+
+clean:
+	rm -f pong
