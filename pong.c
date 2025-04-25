@@ -123,7 +123,7 @@ int main()
 		SDL_UpdateWindowSurface(window);
 
 		// Set time between frames
-		SDL_Delay(refresh_rate/6);
+		SDL_Delay(1000/refresh_rate);
 	}
 	SDL_Quit();
 }
