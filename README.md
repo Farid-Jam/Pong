@@ -12,3 +12,7 @@ Make sure you have [SDL2](https://www.libsdl.org/) installed on your system.
 | P1     | `W`     | `S`       |
 | P2     | `↑`     | `↓`       |
 
+## Future Optimizations
+- Resizable window
+- Allowing the ball to be hit at different angles
+- Changing ball speed
