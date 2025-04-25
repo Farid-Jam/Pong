@@ -3,11 +3,16 @@ A simple two-player Pong clone built with C and SDL2.
 
 ![screenshot](images/screenshot.png)
 
+## Features
+- Classic two-player Pong gameplay
+- Smooth paddle and ball movement using SDL2
+- Simple, retro-style graphics
+
 ## Prerequisites 
 Make sure you have the following installed on your system:
 - [SDL2](https://www.libsdl.org/)
 - A C compiler (e.g., `gcc`, `clang`)
-- A working C development environment
+- `make` build tool
 
 ## How to Run
 Open a terminal and follow these steps:
@@ -15,22 +20,22 @@ Open a terminal and follow these steps:
 
    Navigate to your desired directory and run: 
    ```bash
-     git clone <repository-url>
-     cd <repository-folder>
+   git clone <repository-url>
+   cd <repository-folder>
    ```
    
 2. **Compile the C file**
 
    Use the included `Makefile` to build the project: 
    ```bash
-     make
+   make
    ```
 
 3. **Run the game**
 
    After building, run the executable:
    ```bash
-      ./pong
+   ./pong
    ```
 
 ## Controls 
