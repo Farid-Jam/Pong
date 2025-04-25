@@ -14,5 +14,5 @@ Make sure you have [SDL2](https://www.libsdl.org/) installed on your system.
 
 ## Future Optimizations
 - Resizable window
-- Allowing the ball to be hit at different angles
+- Allowing the ball to move at various angles
 - Changing ball speed
