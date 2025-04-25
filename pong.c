@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
-static int player_speed = 5;
+static int player_speed;
 static const Uint32 white = 0xffffffff;
 static const Uint32 black = 0x00000000;
 static const int refresh_rate = 60;
@@ -11,11 +11,13 @@ int max_speed = 15;
 int player1Score = 0;
 int player2Score = 0;
 double maxOffset = .75;
-int playerHeight = 200;
+int playerHeight = 150;
 int playerWidth = 40;
 int windowWidth;
 int windowHeight;
 int ballRadius = 10;
+int borderWidth = 20;
+int middleLineWidth = 3;
 
 struct circle
 {
@@ -23,6 +25,15 @@ struct circle
 	int y;
 	int r;
 };
+
+void draw_map(SDL_Surface* surface){
+	SDL_Rect middle = (SDL_Rect) {windowWidth/2-middleLineWidth/2, 0, middleLineWidth, windowHeight};
+	SDL_Rect topBorder = (SDL_Rect) {0, 0, windowWidth, borderWidth};
+	SDL_Rect bottomBorder = (SDL_Rect) {0, windowHeight-borderWidth, windowWidth, borderWidth};
+	SDL_FillRect(surface, &middle, white);
+	SDL_FillRect(surface, &topBorder, white);
+	SDL_FillRect(surface, &bottomBorder, white);
+}
 
 // Function that draws circles
 void draw_circle(SDL_Surface* surface, struct circle* circle, Uint32 color)
@@ -67,7 +78,7 @@ void move_ball(SDL_Surface* surface, struct circle* ball, SDL_Rect* pl1, SDL_Rec
 	}
 
 	// If ball collidies with either upper or lower edge of the window border, start moving in the other y direction
-	if (ball->y + ball->r + ballY >= windowHeight || ball->y - ball->r+ ballY <= 0)
+	if (ball->y + ball->r + ballY >= windowHeight - borderWidth || ball->y - ball->r+ ballY <= borderWidth)
 	{
 		ballY *= -1;
 	}
@@ -108,15 +119,15 @@ void move_ball(SDL_Surface* surface, struct circle* ball, SDL_Rect* pl1, SDL_Rec
 void move_rect(SDL_Surface* surface, SDL_Rect* rect, int speed)
 {
 	SDL_Rect* rect2 = rect;
-	if (rect2->y + speed <= 0)
+	if (rect2->y + speed <= borderWidth)
 	{
 		SDL_FillRect(surface, rect, black);
-		rect->y = 0;
+		rect->y = borderWidth;
 		SDL_FillRect(surface, rect, white);
-	} else if (rect->y + speed >= windowHeight - playerHeight)
+	} else if (rect->y + speed >= windowHeight - playerHeight - borderWidth)
 	{
 		SDL_FillRect(surface, rect, black);
-		rect->y = windowHeight - playerHeight;
+		rect->y = windowHeight - playerHeight - borderWidth;
 		SDL_FillRect(surface, rect, white);
 	} 
 	else 
@@ -138,6 +149,7 @@ int main()
 	SDL_Surface *surface = SDL_GetWindowSurface(window);
 	windowHeight = surface->h;
 	windowWidth = surface->w;
+	player_speed = windowWidth / 128;
 	SDL_SetWindowResizable(window, SDL_TRUE);
 
 	// Initialize ball
@@ -148,15 +160,14 @@ int main()
 	draw_circle(surface, &circle, white);
 
 	// Decorate window
-	SDL_Rect middle = (SDL_Rect) {windowWidth/2, 0, 1, windowHeight};
-	SDL_FillRect(surface, &middle, white);
+	draw_map(surface);
 
 	// Create player 1's rectange;
-	SDL_Rect pl1 = (SDL_Rect) {40, 40, 40, 200};
+	SDL_Rect pl1 = (SDL_Rect) {playerWidth, playerWidth + borderWidth, playerWidth, playerHeight};
 	SDL_FillRect(surface, &pl1, white);
 
 	// Create player 2's rectange;
-	SDL_Rect pl2 = (SDL_Rect) {560, 240, 40, 200};
+	SDL_Rect pl2 = (SDL_Rect) {windowWidth - 2 * playerWidth, windowHeight - playerHeight - playerWidth - borderWidth, playerWidth, playerHeight};
 	SDL_FillRect(surface, &pl2, white);
 
 	// Update the window
@@ -169,21 +180,25 @@ int main()
 	while(running){
 		const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
 		SDL_PollEvent(&event);
+
+		// If user closes application, send final message to terminal and stop game loop
 		if(event.type == SDL_QUIT)
 		{
 			printf("\nFINAL SCORE\n----------------\nPLAYER 1: %d\nPLAYER 2: %d \n", player1Score, player2Score);
 			running = 0;
 		}
+
+		// If user resizes window, adjust models map design
 		if (event.type == SDL_WINDOWEVENT){
 			if (event.window.event == SDL_WINDOWEVENT_RESIZED){
 				surface = SDL_GetWindowSurface(window);
 				windowHeight = surface->h;
 				windowWidth = surface->w;
+				player_speed = windowWidth / 128;
 				SDL_FillRect(surface, &pl2, black);
 				pl2.x = windowWidth - 80;
 				SDL_FillRect(surface, &pl2, white);
-				middle = (SDL_Rect) {windowWidth/2, 0, 1, windowHeight};
-				SDL_FillRect(surface, &middle, white);
+				draw_map(surface);
 				SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 0, 0));
 			}
 		}
@@ -209,7 +224,7 @@ int main()
 		move_ball(surface, &circle, &pl1, &pl2);
 
 		// Update window
-		SDL_FillRect(surface, &middle, white);
+		draw_map(surface);
 		SDL_UpdateWindowSurface(window);
 
 		// Set time between frames
