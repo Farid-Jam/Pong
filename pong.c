@@ -26,13 +26,20 @@ struct circle
 	int r;
 };
 
-void draw_map(SDL_Surface* surface){
-	SDL_Rect middle = (SDL_Rect) {windowWidth/2-middleLineWidth/2, 0, middleLineWidth, windowHeight};
+void draw_map(SDL_Surface* surface)
+{
+	// Create top and bottom borders
 	SDL_Rect topBorder = (SDL_Rect) {0, 0, windowWidth, borderWidth};
 	SDL_Rect bottomBorder = (SDL_Rect) {0, windowHeight-borderWidth, windowWidth, borderWidth};
-	SDL_FillRect(surface, &middle, white);
 	SDL_FillRect(surface, &topBorder, white);
 	SDL_FillRect(surface, &bottomBorder, white);
+
+	// Create dotted white line down the middle
+	for (int i = borderWidth; i <= windowHeight; i += 2*borderWidth)
+	{
+		SDL_Rect middleBox = (SDL_Rect) {windowWidth/2 - borderWidth/2, i, borderWidth, borderWidth};
+		SDL_FillRect(surface, &middleBox, white);
+	}
 }
 
 // Function that draws circles
@@ -143,7 +150,7 @@ int main()
 	// Initialize system
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
 
-	// Create window and grab surface
+	// Create window, grab surface, and initialize window dimensions dependendant variables
 	SDL_Window *window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
 	640, 480, SDL_WINDOW_SHOWN);
 	SDL_Surface *surface = SDL_GetWindowSurface(window);
@@ -188,7 +195,7 @@ int main()
 			running = 0;
 		}
 
-		// If user resizes window, adjust models map design
+		// If user resizes window, re-initialize window dimensions dependant variables and game
 		if (event.type == SDL_WINDOWEVENT){
 			if (event.window.event == SDL_WINDOWEVENT_RESIZED){
 				surface = SDL_GetWindowSurface(window);
