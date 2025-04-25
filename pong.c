@@ -7,12 +7,12 @@ static const Uint32 black = 0x00000000;
 static const int refresh_rate = 60;
 int ballX = 5;
 int ballY = 4;
-int max_speed = 15;
+int max_speed = 10;
 int player1Score = 0;
 int player2Score = 0;
 double maxOffset = .75;
-int playerHeight = 150;
-int playerWidth = 40;
+int playerHeight = 120;
+int playerWidth = 30;
 int windowWidth;
 int windowHeight;
 int ballRadius = 10;
@@ -202,9 +202,9 @@ int main()
 				windowHeight = surface->h;
 				windowWidth = surface->w;
 				player_speed = windowWidth / 128;
-				SDL_FillRect(surface, &pl2, black);
-				pl2.x = windowWidth - 80;
-				SDL_FillRect(surface, &pl2, white);
+				pl2.x = windowWidth - 2 * playerWidth;
+				move_rect(surface, &pl1, 1);
+				move_rect(surface, &pl2, 1);
 				draw_map(surface);
 				SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 0, 0));
 			}
