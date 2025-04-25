@@ -1,7 +1,13 @@
-all: pong
+CC = gcc
+CFLAGS = -I/opt/homebrew/Cellar/sdl2/2.32.4/include
+LDFLAGS = -L/opt/homebrew/Cellar/sdl2/2.32.4/lib -lSDL2
+TARGET = pong
+SRC = pong.c
+
+all: $(TARGET)
 
 pong: pong.c
-	gcc -o pong pong.c -I/opt/homebrew/Cellar/sdl2/2.32.4/include -L/opt/homebrew/Cellar/sdl2/2.32.4/lib -lSDL2
+	$(CC) -o $(TARGET) $(SRC) $(CFLAGS) $(LDFLAGS)
 
 clean:
-	rm -f pong
+	rm -f $(TARGET)
