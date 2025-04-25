@@ -21,7 +21,7 @@ Open a terminal and follow these steps
    
 2. **Compile the C file**
 
-   Use the included MakeFile to build the project: 
+   Use the included `MakeFile` to build the project: 
    ```bash
      make
    ```
