@@ -1,4 +1,4 @@
-# 🎾 Pong Game
+# 🕹️ Pong Game
 A simple two-player Pong clone built with C and SDL2.
 
 ![screenshot](images/screenshot.png)
