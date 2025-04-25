@@ -149,57 +149,20 @@ int main()
 		}
 
 		// Handle player inputs
-		if(keyboard_state_array[SDL_SCANCODE_S] && !(keyboard_state_array[SDL_SCANCODE_UP] || keyboard_state_array[SDL_SCANCODE_DOWN] || keyboard_state_array[SDL_SCANCODE_W]))
-		{
-			move_rect(surface, &pl1, +movement_speed);
-		}
-		if (keyboard_state_array[SDL_SCANCODE_W] && !(keyboard_state_array[SDL_SCANCODE_UP] || keyboard_state_array[SDL_SCANCODE_DOWN] || keyboard_state_array[SDL_SCANCODE_S]))
-		{
+		// PLAYER 1
+		if (keyboard_state_array[SDL_SCANCODE_W]) {
 			move_rect(surface, &pl1, -movement_speed);
 		}
-		if (keyboard_state_array[SDL_SCANCODE_DOWN] && !(keyboard_state_array[SDL_SCANCODE_UP] || keyboard_state_array[SDL_SCANCODE_S] || keyboard_state_array[SDL_SCANCODE_W]))
-		{
-			move_rect(surface, &pl2, +movement_speed);
+		if (keyboard_state_array[SDL_SCANCODE_S]) {
+			move_rect(surface, &pl1, movement_speed);
 		}
-		if (keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_S] || keyboard_state_array[SDL_SCANCODE_DOWN] || keyboard_state_array[SDL_SCANCODE_W]))
-		{
+
+		// PLAYER 2
+		if (keyboard_state_array[SDL_SCANCODE_UP]) {
 			move_rect(surface, &pl2, -movement_speed);
 		}
-		if (keyboard_state_array[SDL_SCANCODE_S] && keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_DOWN] || keyboard_state_array[SDL_SCANCODE_W]))
-		{
-			move_rect(surface, &pl2, -movement_speed);
-			move_rect(surface, &pl1, +movement_speed);
-		}
-		if (keyboard_state_array[SDL_SCANCODE_S] && keyboard_state_array[SDL_SCANCODE_DOWN] && !(keyboard_state_array[SDL_SCANCODE_UP] || keyboard_state_array[SDL_SCANCODE_W]))
-		{
-			move_rect(surface, &pl2, +movement_speed);
-			move_rect(surface, &pl1, +movement_speed);
-		}
-		if (keyboard_state_array[SDL_SCANCODE_W] && keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_DOWN] || keyboard_state_array[SDL_SCANCODE_S]))
-		{
-			move_rect(surface, &pl2, -movement_speed);
-			move_rect(surface, &pl1, -movement_speed);
-		}
-		if (keyboard_state_array[SDL_SCANCODE_W] && keyboard_state_array[SDL_SCANCODE_DOWN] && !(keyboard_state_array[SDL_SCANCODE_UP] || keyboard_state_array[SDL_SCANCODE_S]))
-		{
-			move_rect(surface, &pl2, +movement_speed);
-			move_rect(surface, &pl1, -movement_speed);
-		}
-		if (keyboard_state_array[SDL_SCANCODE_W] && keyboard_state_array[SDL_SCANCODE_DOWN] && keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_S]))
-		{
-			move_rect(surface, &pl1, -movement_speed);
-		}
-		if (keyboard_state_array[SDL_SCANCODE_S] && keyboard_state_array[SDL_SCANCODE_DOWN] && keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_W]))
-		{
-			move_rect(surface, &pl1, +movement_speed);
-		}
-		if (keyboard_state_array[SDL_SCANCODE_W] && keyboard_state_array[SDL_SCANCODE_S] && keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_DOWN]))
-		{
-			move_rect(surface, &pl2, -movement_speed);
-		}
-		if (keyboard_state_array[SDL_SCANCODE_W] && keyboard_state_array[SDL_SCANCODE_S] && keyboard_state_array[SDL_SCANCODE_DOWN] && !(keyboard_state_array[SDL_SCANCODE_UP]))
-		{
-			move_rect(surface, &pl2, +movement_speed);
+		if (keyboard_state_array[SDL_SCANCODE_DOWN]) {
+			move_rect(surface, &pl2, movement_speed);
 		}
 
 		// Update ball position
