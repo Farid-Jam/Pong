@@ -7,6 +7,8 @@ static const Uint32 black = 0x00000000;
 static const int refresh_rate = 60;
 int ballX = 5;
 int ballY = 4;
+int move_ball_x = 5;
+int move_ball_y = 5;
 
 struct circle
 {
@@ -15,6 +17,7 @@ struct circle
 	int r;
 };
 
+// Function that draws circles
 void draw_circle(SDL_Surface* surface, struct circle* circle, Uint32 color)
 {
 	int radiusSquared = circle->r * circle->r;
@@ -29,30 +32,38 @@ void draw_circle(SDL_Surface* surface, struct circle* circle, Uint32 color)
 	}
 }
 
+// Function that handles moving of the ball
 void move_ball(SDL_Surface* surface, struct circle* ball, SDL_Rect* pl1, SDL_Rect* pl2)
 {
-	if ((pl2->y <= ball->y) && (ball->y <= pl2->y+200) && (ball->x + ballX >= pl2->x))
+	// If ball collidies with either player model, start moving in the other x direction
+	if ((pl2->y <= ball->y) && (ball->y <= pl2->y+200) && (ball->x + ballX >= pl2->x) 
+	|| (pl1->y <= ball->y) && (ball->y <= pl1->y+200) && (ball->x + ballX <= pl1->x + 40))
 	{
 		ballX *= -1;
 	}
-	else if ((pl1->y <= ball->y) && (ball->y <= pl1->y+200) && (ball->x + ballX <= pl1->x + 40))
-	{
-		ballX *= -1;
-	}
-	if (ball->y + ballY >= 480)
+
+	// If ball collidies with either upper or lower edge of the window border, start moving in the other y direction
+	if (ball->y + ballY >= 480 || ball->y + ballY <= 0)
 	{
 		ballY *= -1;
 	}
-	else if (ball->y + ballY <= 0)
+
+	// Check if the ball is beyond either players model. If so, reset the ball. Else, move ball 
+	if (ball->x + ballX > pl2->x || ball->x + ballX < pl1->x+40)
 	{
-		ballY *= -1;
+		draw_circle(surface, ball, black);
+		ball->x = 320;
+		ball->y = 240;
+		draw_circle(surface, ball, white);
+	} else 
+	{
+		draw_circle(surface, ball, black);
+		ball->x += ballX;
+		ball->y += ballY;
+		draw_circle(surface, ball, white);
+		SDL_FillRect(surface, pl1, white);
+		SDL_FillRect(surface, pl2, white);
 	}
-	draw_circle(surface, ball, black);
-	ball->x += ballX;
-	ball->y += ballY;
-	draw_circle(surface, ball, white);
-	SDL_FillRect(surface, pl1, white);
-	SDL_FillRect(surface, pl2, white);
 }
 
 // Function that handles moving of players
@@ -94,9 +105,6 @@ int main()
 	circle.y = 240;
 	circle.r = 10;
 	draw_circle(surface, &circle, white);
-
-	int move_ball_x = 5;
-	int move_ball_y = 5;
 
 	// Decorate window
 	SDL_Rect middle = (SDL_Rect) {320, 0, 1, 480};
