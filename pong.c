@@ -9,6 +9,8 @@ int ballX = 5;
 int ballY = 4;
 int move_ball_x = 5;
 int move_ball_y = 5;
+int player1Score = 0;
+int player2Score = 0;
 
 struct circle
 {
@@ -49,13 +51,25 @@ void move_ball(SDL_Surface* surface, struct circle* ball, SDL_Rect* pl1, SDL_Rec
 	}
 
 	// Check if the ball is beyond either players model. If so, reset the ball. Else, move ball 
-	if (ball->x + ballX > pl2->x || ball->x + ballX < pl1->x+40)
+	if (ball->x + ballX > pl2->x)
 	{
+		player1Score++;
+		printf("\n\nPLAYER 1 SCORES!\n");
+		printf("\nTOTAL SCORE\n----------------\nPLAYER 1: %d\nPLAYER 2: %d \n", player1Score, player2Score);
 		draw_circle(surface, ball, black);
 		ball->x = 320;
 		ball->y = 240;
 		draw_circle(surface, ball, white);
-	} else 
+	} else if (ball->x + ballX < pl1->x+40)
+	{
+		player2Score++;
+		printf("\n\nPLAYER 2 SCORES!\n");
+		printf("\nTOTAL SCORE\n----------------\nPLAYER 1: %d\nPLAYER 2: %d \n", player1Score, player2Score);
+		draw_circle(surface, ball, black);
+		ball->x = 320;
+		ball->y = 240;
+		draw_circle(surface, ball, white);
+	} else
 	{
 		draw_circle(surface, ball, black);
 		ball->x += ballX;
@@ -130,6 +144,7 @@ int main()
 		SDL_PollEvent(&event);
 		if(event.type == SDL_QUIT)
 		{
+			printf("\nFINAL SCORE\n----------------\nPLAYER 1: %d\nPLAYER 2: %d \n", player1Score, player2Score);
 			running = 0;
 		}
 
