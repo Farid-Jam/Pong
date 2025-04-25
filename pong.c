@@ -7,8 +7,7 @@ static const Uint32 black = 0x00000000;
 static const int refresh_rate = 60;
 int ballX = 5;
 int ballY = 4;
-int move_ball_x = 5;
-int move_ball_y = 5;
+int max_speed = 15;
 int player1Score = 0;
 int player2Score = 0;
 
@@ -38,10 +37,23 @@ void draw_circle(SDL_Surface* surface, struct circle* circle, Uint32 color)
 void move_ball(SDL_Surface* surface, struct circle* ball, SDL_Rect* pl1, SDL_Rect* pl2)
 {
 	// If ball collidies with either player model, start moving in the other x direction
-	if ((pl2->y <= ball->y) && (ball->y <= pl2->y+200) && (ball->x + ballX >= pl2->x) 
-	|| (pl1->y <= ball->y) && (ball->y <= pl1->y+200) && (ball->x + ballX <= pl1->x + 40))
+	if ((pl2->y <= ball->y) && (ball->y <= pl2->y+200) && (ball->x + ballX >= pl2->x))
 	{
-		ballX *= -1;
+		float offset = (float)(ball->y - (pl2->y + 100)) / 100;
+		if (offset < -.75) offset = -.75;
+		if (offset > .75) offset = .75;
+		ballY = max_speed * offset;
+		if (offset < 0) offset = -offset;
+		ballX = -max_speed * (1 - offset);
+	}
+	if ((pl1->y <= ball->y) && (ball->y <= pl1->y+200) && (ball->x + ballX <= pl1->x + 40))
+	{
+		float offset = (float)(ball->y - (pl1->y + 100)) / 100;
+		if (offset < -.75) offset = -.75;
+		if (offset > .75) offset = .75;
+		ballY = max_speed * offset;
+		if (offset < 0) offset = -offset;
+		ballX = max_speed * (1 - offset);
 	}
 
 	// If ball collidies with either upper or lower edge of the window border, start moving in the other y direction
@@ -51,7 +63,7 @@ void move_ball(SDL_Surface* surface, struct circle* ball, SDL_Rect* pl1, SDL_Rec
 	}
 
 	// If the ball is beyond player 2, give player 1 a point and reset ball position
-	if (ball->x + ballX > pl2->x)
+	if (ball->x - ball->r + ballX > pl2->x)
 	{
 		player1Score++;
 		printf("\n\nPLAYER 1 SCORES!\n");
@@ -60,7 +72,8 @@ void move_ball(SDL_Surface* surface, struct circle* ball, SDL_Rect* pl1, SDL_Rec
 		ball->x = 320;
 		ball->y = 240;
 		draw_circle(surface, ball, white);
-	} else if (ball->x + ballX < pl1->x+40) // If the ball is beyond player 1, give player 2 a point and reset ball position
+		ballX *= -1;
+	} else if (ball->x + ball->r + ballX < pl1->x+40) // If the ball is beyond player 1, give player 2 a point and reset ball position
 	{
 		player2Score++;
 		printf("\n\nPLAYER 2 SCORES!\n");
@@ -69,6 +82,7 @@ void move_ball(SDL_Surface* surface, struct circle* ball, SDL_Rect* pl1, SDL_Rec
 		ball->x = 320;
 		ball->y = 240;
 		draw_circle(surface, ball, white);
+		ballX *= -1;
 	} else // Else, let the ball continue on it's path
 	{
 		draw_circle(surface, ball, black);
