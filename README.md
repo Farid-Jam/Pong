@@ -7,6 +7,9 @@ A simple two-player Pong clone built with C and SDL2.
 - Classic two-player Pong gameplay
 - Smooth paddle and ball movement using SDL2
 - Simple, retro-style graphics
+- Collision checking
+- Resizable window
+- Score tracking / scoreboard within terminal 
 
 ## Prerequisites 
 Make sure you have the following installed on your system:
@@ -43,3 +46,7 @@ Open a terminal and follow these steps:
 |--------|---------|-----------|
 | P1     | `W`     | `S`       |
 | P2     | `↑`     | `↓`       |
+
+## Planned Features
+- In-game score
+- Pause button
