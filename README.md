@@ -9,11 +9,14 @@ Make sure you have [SDL2](https://www.libsdl.org/) installed on your system, a C
 ## How to Run
 Within a terminal, follow the folloiwng steps:
 1. **Clone the repository**
+
    Use ```bash cd``` to direct yourself into the desired directory, then type
    ```bash
      git clone <repository-url>
      cd <repository-folder>
-2. **Compile C files**
+   
+3. **Compile C files**
+
    Using the included MakeFile, this is as simple as typing
    ```bash
      make
