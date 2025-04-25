@@ -36,7 +36,7 @@ void draw_circle(SDL_Surface* surface, struct circle* circle, Uint32 color)
 // Function that handles moving of the ball
 void move_ball(SDL_Surface* surface, struct circle* ball, SDL_Rect* pl1, SDL_Rect* pl2)
 {
-	// If ball collidies with either player model, start moving in the other x direction
+	// If ball collidies with player 2, calculate offset and alter x, y, speeds occrdingly while also flipping x direction
 	if ((pl2->y <= ball->y) && (ball->y <= pl2->y+200) && (ball->x + ballX >= pl2->x))
 	{
 		float offset = (float)(ball->y - (pl2->y + 100)) / 100;
@@ -46,6 +46,8 @@ void move_ball(SDL_Surface* surface, struct circle* ball, SDL_Rect* pl1, SDL_Rec
 		if (offset < 0) offset = -offset;
 		ballX = -max_speed * (1 - offset);
 	}
+
+	// If ball collidies with player 1, calculate offset and alter x, y, speeds occrdingly while also flipping x direction
 	if ((pl1->y <= ball->y) && (ball->y <= pl1->y+200) && (ball->x + ballX <= pl1->x + 40))
 	{
 		float offset = (float)(ball->y - (pl1->y + 100)) / 100;
