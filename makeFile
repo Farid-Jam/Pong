@@ -6,7 +6,7 @@ SRC = pong.c
 
 all: $(TARGET)
 
-pong: pong.c
+$(TARGET): $(SRC)
 	$(CC) -o $(TARGET) $(SRC) $(CFLAGS) $(LDFLAGS)
 
 clean:
