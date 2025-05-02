@@ -5,6 +5,7 @@ A 1972 Pong clone featuring two modes: one-on-one with a simple strategic AI and
 
 ## Features
 - Classic two-player Pong gameplay
+- AI opponent
 - Smooth paddle and ball movement using SDL2
 - Simple, retro-style graphics
 - Collision checking
@@ -42,6 +43,13 @@ Open a terminal and follow these steps:
    ```
 
 ## Controls 
+### Mode Selection
+| Input | Output |
+|-------|--------|
+| `1`   |vs. AI  |
+|`2`    |2-player|
+
+### Paddle Controls
 | Player | Move Up | Move Down |
 |--------|---------|-----------|
 | P1     | `W`     | `S`       |
