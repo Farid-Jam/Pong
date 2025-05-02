@@ -5,7 +5,7 @@ A 1972 Pong clone featuring two modes: one-on-one with a simple strategic AI and
 
 ## Features
 - Classic two-player Pong gameplay
-- AI opponent
+- AI opponent that predicts ball movement and adapts to player input
 - Smooth paddle and ball movement using SDL2
 - Simple, retro-style graphics
 - Collision checking
