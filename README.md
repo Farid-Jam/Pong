@@ -1,5 +1,5 @@
 # 🕹️ Pong Game
-A simple two-player Pong clone built with C and SDL2.
+A 1972 Pong clone featuring two modes: one-on-one with a simple strategic AI and simple two-player local gameplay. 
 
 ![screenshot](images/screenshot.png)
 
