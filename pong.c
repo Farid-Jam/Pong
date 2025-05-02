@@ -27,6 +27,7 @@ struct circle
 	int r;
 };
 
+// Function that returns where the ball will be on the ai's side
 int predict_ball(struct circle* ball, SDL_Rect* ai)
 {
 	int yBall = ballY;
@@ -42,6 +43,7 @@ int predict_ball(struct circle* ball, SDL_Rect* ai)
 	return ball->y;
 }
 
+// Function that draws the maps borders and design
 void draw_map(SDL_Surface* surface)
 {
 	// Create top and bottom borders
@@ -244,7 +246,7 @@ int main()
 			if (keyboard_state_array[SDL_SCANCODE_DOWN]) {
 				move_rect(surface, &pl2, player_speed);
 			}
-		} else {
+		} else { // AI
 			if (ballX < 0){
 				if (circle.y < pl2.y)
 				{
