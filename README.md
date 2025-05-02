@@ -30,7 +30,7 @@ Open a terminal and follow these steps:
    
 2. **Compile the C file**
 
-   Use the included `Makefile` to build the project: 
+   Use the included `Makefile` to build the project, edting paths as needed: 
    ```bash
    make
    ```
