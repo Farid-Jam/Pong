@@ -5,7 +5,7 @@ static int player_speed;
 static const Uint32 white = 0xffffffff;
 static const Uint32 black = 0x00000000;
 static const int refresh_rate = 60;
-int ballX = 5;
+int ballX = 15;
 int ballY = 4;
 int max_speed = 15;
 int player1Score = 0;
@@ -18,7 +18,7 @@ int windowHeight;
 int ballRadius = 10;
 int borderWidth = 20;
 int middleLineWidth = 3;
-int ai = 1; // 0 for off, any other number for on
+int ai = 1;
 
 struct circle
 {
@@ -214,8 +214,10 @@ int main()
 		}
 
 		// If user resizes window, re-initialize window dimensions dependant variables and game
-		if (event.type == SDL_WINDOWEVENT){
-			if (event.window.event == SDL_WINDOWEVENT_RESIZED){
+		if (event.type == SDL_WINDOWEVENT)
+		{
+			if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+			{
 				surface = SDL_GetWindowSurface(window);
 				windowHeight = surface->h;
 				windowWidth = surface->w;
@@ -228,26 +230,43 @@ int main()
 			}
 		}
 
+		// Switch to vs. computer mode
+		if (keyboard_state_array[SDL_SCANCODE_1])
+		{
+			ai = 1;
+		}
+
+		// Switch to 2 player mode
+		if (keyboard_state_array[SDL_SCANCODE_2])
+		{
+			ai = 0;
+		}
+
 		// Handle player/computer inputs
 		// PLAYER 1
-		if (keyboard_state_array[SDL_SCANCODE_W]) {
+		if (keyboard_state_array[SDL_SCANCODE_W]) 
+		{
 			move_rect(surface, &pl1, -player_speed);
 		}
-		if (keyboard_state_array[SDL_SCANCODE_S]) {
+		if (keyboard_state_array[SDL_SCANCODE_S]) 
+		{
 			move_rect(surface, &pl1, player_speed);
 		}
 
 		// PLAYER 2
 		if (!ai)
 		{
-			if (keyboard_state_array[SDL_SCANCODE_UP]) {
+			if (keyboard_state_array[SDL_SCANCODE_UP]) 
+			{
 				move_rect(surface, &pl2, -player_speed);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_DOWN]) {
+			if (keyboard_state_array[SDL_SCANCODE_DOWN]) 
+			{
 				move_rect(surface, &pl2, player_speed);
 			}
 		} else { // AI
-			if (ballX < 0){
+			if (ballX < 0)
+			{
 				if (circle.y < pl2.y)
 				{
 					move_rect(surface, &pl2, -player_speed);
@@ -256,7 +275,8 @@ int main()
 				{
 					move_rect(surface, &pl2, player_speed);
 				}
-			} else {
+			} else 
+			{
 				struct circle mockCircle = circle;
 				int targetY = predict_ball(&mockCircle, &pl2);
 				if (pl1.y + playerHeight / 2 > targetY && pl2.y + circle.r > targetY)
