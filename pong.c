@@ -7,7 +7,7 @@ static const Uint32 black = 0x00000000;
 static const int refresh_rate = 60;
 int ballX = 5;
 int ballY = 4;
-int max_speed = 10;
+int max_speed = 15;
 int player1Score = 0;
 int player2Score = 0;
 double maxOffset = .75;
@@ -18,6 +18,7 @@ int windowHeight;
 int ballRadius = 10;
 int borderWidth = 20;
 int middleLineWidth = 3;
+int ai = 1; // 0 for off, any other number for on
 
 struct circle
 {
@@ -25,6 +26,21 @@ struct circle
 	int y;
 	int r;
 };
+
+int predict_ball(struct circle* ball, SDL_Rect* ai)
+{
+	int yBall = ballY;
+	while (ball->x + ball->r + ballX < ai->x)
+	{
+		if (ball->y + ball->r + yBall >= windowHeight - borderWidth || ball->y - ball->r+ yBall <= borderWidth)
+		{
+			yBall *= -1;
+		}
+		ball->x += ballX;
+		ball->y += yBall;
+	}
+	return ball->y;
+}
 
 void draw_map(SDL_Surface* surface)
 {
@@ -210,7 +226,7 @@ int main()
 			}
 		}
 
-		// Handle player inputs
+		// Handle player/computer inputs
 		// PLAYER 1
 		if (keyboard_state_array[SDL_SCANCODE_W]) {
 			move_rect(surface, &pl1, -player_speed);
@@ -220,11 +236,65 @@ int main()
 		}
 
 		// PLAYER 2
-		if (keyboard_state_array[SDL_SCANCODE_UP]) {
-			move_rect(surface, &pl2, -player_speed);
-		}
-		if (keyboard_state_array[SDL_SCANCODE_DOWN]) {
-			move_rect(surface, &pl2, player_speed);
+		if (!ai)
+		{
+			if (keyboard_state_array[SDL_SCANCODE_UP]) {
+				move_rect(surface, &pl2, -player_speed);
+			}
+			if (keyboard_state_array[SDL_SCANCODE_DOWN]) {
+				move_rect(surface, &pl2, player_speed);
+			}
+		} else {
+			if (ballX < 0){
+				if (circle.y < pl2.y)
+				{
+					move_rect(surface, &pl2, -player_speed);
+				}
+				if (circle.y > pl2.y + playerHeight)
+				{
+					move_rect(surface, &pl2, player_speed);
+				}
+			} else {
+				struct circle mockCircle = circle;
+				int targetY = predict_ball(&mockCircle, &pl2);
+				if (pl1.y + playerHeight / 2 > targetY && pl2.y + circle.r > targetY)
+				{
+					for (int i = 0; i < player_speed; i++)
+					{
+						if (pl2.y > targetY)
+						{
+							move_rect(surface, &pl2, -1);
+						}
+					}
+				} else if (pl1.y + playerHeight / 2 < targetY && pl2.y + playerHeight - circle.r > targetY)
+				{
+					for (int i = 0; i < player_speed; i++)
+					{
+						if (pl2.y + playerHeight > targetY)
+						{
+							move_rect(surface, &pl2, -1);
+						}
+					}
+				} else if (pl1.y + playerHeight / 2 > targetY && pl2.y + circle.r < targetY)
+				{
+					for (int i = 0; i < player_speed; i++)
+					{
+						if (targetY && pl2.y < targetY)
+						{
+							move_rect(surface, &pl2, 1);
+						}
+					}
+				} else if (pl1.y + playerHeight / 2 < targetY && pl2.y + playerHeight - circle.r < targetY)
+				{
+					for (int i = 0; i < player_speed; i++)
+					{
+						if (pl2.y + playerHeight < targetY)
+						{
+							move_rect(surface, &pl2, 1);
+						}
+					}
+				}
+			}
 		}
 
 		// Update ball position
